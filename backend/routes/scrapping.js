@@ -1,27 +1,36 @@
 const express = require('express')
 const router = express.Router()
 
+const {Builder, By} = require ('selenium-webdriver')
+require ('selenium-webdriver/chrome')
+require ('chromedriver')
+
+
 const pool = require('../database')
 const { isLoggedIn } = require('../lib/auth')
 
-router.post ('/api/negocio', async (req, res) => {
-    const {nombre_negocio, nro_ruc, nombre_contacto, correo, nro_telefono, url_logo} = req.body
+router.get ('/api/scrapping/:nro_ruc', async (req, res) => {
+    const {nro_ruc} = req.body
 
     try {
-        const newNegocio = {nombre_negocio, nro_ruc, nombre_contacto, correo, nro_telefono, url_logo}
-        const new_negocio = await pool.query ('INSERT INTO negocio_empresa set ?', [newNegocio])
-        const negocios = await pool.query ('SELECT * FROM negocio_empresa WHERE id = ?', [new_negocio.insertId])
+        const driver = await new Builder().forBrowser('chrome').build()
+        await driver.get(`https://apps.osce.gob.pe/perfilprov-ui/ficha/${nro_ruc}`)
 
+        const elements = await driver.findElements(By.className('info'));
+        for (const element of elements) {
+            const nro_ruc = await element.findElement(By.tagName('info-value')).getText()
+            const nro_telefono = await element.findElement(By.tagName('info-value')).getText()
+            const correo = await element.findElement(By.tagName('emails')).getText()
+        }
         return res.json ({
-            negocio: negocios[0],
-            success: true
+            nro_ruc: nro_ruc,
+            nro_telefono: nro_telefono,
+            correo: correo
         })
     } catch (error) {
-        console.log (error)
         return res.json ({
             error: error,
-            success: false,
-            negocios: []
+            success: false
         })
     }
 })
