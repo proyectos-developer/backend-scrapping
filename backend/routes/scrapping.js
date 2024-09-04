@@ -16,7 +16,8 @@ router.get ('/api/scrapping/:nro_ruc', async (req, res) => {
         const driver = await new Builder().forBrowser('chrome').build()
         await driver.get(`https://apps.osce.gob.pe/perfilprov-ui/ficha/${nro_ruc}`)
 
-        const elements = await driver.findElements(By.className('info'));
+        const elements = await driver.findElements(By.className('profile-content'));
+        
         for (const element of elements) {
             const ruc = await element.findElement(By.tagName('info-value')).getText()
             const nro_telefono = await element.findElement(By.tagName('info-value')).getText()
