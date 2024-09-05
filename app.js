@@ -10,12 +10,12 @@ const mysqlstore = require('express-mysql-session')
 const passport = require('passport')
 const fileUpload = require ('express-fileupload')
 
-const { database } = require('./backend/keys.js')
+//const { database } = require('./backend/keys.js')
 
 const app = express()
 app.use(cors())
 app.use(fileUpload())
-require ('./backend/lib/passport.js')
+//require ('./backend/lib/passport.js')
 
 /**Configuraciones */
 app.set ('port', process.env.PORT || 3001);
@@ -30,34 +30,34 @@ app.engine('.hbs', exphbs.engine({
 app.set('view engine', '.hbs');
 
 //Middlewares
-app.use(
+/**app.use(
     session({
         secret: 'faztmysqlnodesession',
         resave: false,
         saveUninitialized: false,
         store: new mysqlstore(database)
     })
-)
+)**/
 
-app.use(flash())
+/**app.use(flash())
 app.use(morgan('dev'))
 app.use(express.urlencoded({ extended: false }))
 app.use(express.json())
 
 app.use(passport.initialize())
-app.use(passport.session())
+app.use(passport.session())**/
 
 //Variables globales
-app.use((req, res, next) => {
+/**app.use((req, res, next) => {
     app.locals.success = req.flash('success')
     app.locals.message = req.flash('message')
     app.locals.users = req.users
     next()
-})
+})**/
  
 //Rutas
-app.use(require('./backend/routes/index.js'));
-app.use(require('./backend/routes/authentication.js'))
+//app.use(require('./backend/routes/index.js'));
+//app.use(require('./backend/routes/authentication.js'))
 
 app.use(require('./backend/routes/scrapping.js'))
 

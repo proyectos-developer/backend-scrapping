@@ -2,7 +2,7 @@ module.exports = {
     database: {
         host: 'web-scrapping.com',
         user: 'admin_scrapping', 
-        password: '!9q76O5av',
+        password: '60yX16fr&',
         database: 'admin_scrapping' 
     },
     mailjet:{

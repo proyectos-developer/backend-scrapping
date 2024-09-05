@@ -48,16 +48,26 @@ router.get ('/api/scrapping/:nro_ruc', async (req, res) => {
                 break;
             }
         }
-        await driver.quit()
-        ruc = ruc.toString().split(':'[1])
-        const newData  = {nombre, correo, nro_telefono, ruc}
-        const new_data = await pool.query ('INSERT INTO data_empresa set ?', [newData])
-        const data = await pool.query ('SELECT * FROM data_empresa WHERE id = ?', [new_data.insertId])
-
+        //const newData  = {nombre, correo, nro_telefono, ruc}
         return res.json ({
-            data_empresa: data,
+            nombre: nombre,
+            corre: correo,
+            nro_telefono: nro_telefono,
+            ruc: ruc,
             success: true
         })
+        /**if (count === 4){
+            ruc = ruc.toString().split(':'[1])
+            const newData  = {nombre, correo, nro_telefono, ruc}
+            const new_data = await pool.query ('INSERT INTO data_empresa set ?', [newData])
+            const data = await pool.query ('SELECT * FROM data_empresa WHERE id = ?', [new_data.insertId])
+
+            await driver.quit()
+            return res.json ({
+                data_empresa: data,
+                success: true
+            })
+        }**/
     } catch (error) {
         console.log (error)
         return res.json ({
