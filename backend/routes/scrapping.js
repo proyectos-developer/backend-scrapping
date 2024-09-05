@@ -9,7 +9,7 @@ const pool = require('../database')
 
 router.get ('/api/scrapping/:nro_ruc', async (req, res) => {
     const {nro_ruc} = req.params
-    let ruc, nro_telefono, correo, nombre
+    let ruc = '', nro_telefono = '', correo = '', nombre = ''
     let count = 0
     try {
         const driver = await new Builder().forBrowser('chrome').build()
