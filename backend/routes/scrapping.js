@@ -2,8 +2,8 @@ const express = require('express')
 const router = express.Router()
 
 const {Builder, By} = require ('selenium-webdriver')
-require ('selenium-webdriver/chrome')
-require ('chromedriver')
+require ('selenium-webdriver/safari')
+require ('safaridriver')
 
 const pool = require('../database')
 
@@ -12,7 +12,7 @@ router.get ('/api/scrapping/:nro_ruc', async (req, res) => {
     let ruc = '', nro_telefono = '', correo = '', nombre = ''
     let count = 0
     try {
-        const driver = await new Builder().forBrowser('chrome').build()
+        const driver = await new Builder().forBrowser('safari').build()
         await driver.get(`https://apps.osce.gob.pe/perfilprov-ui/ficha/${nro_ruc}`)
 
         const elements_cero = await driver.findElements(By.className('ficha__content'));
